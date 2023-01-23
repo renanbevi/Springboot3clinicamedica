@@ -36,5 +36,11 @@ public class MedicoController {
         medico.atualizarInformacoes(dados); // carreguei os dados do medico e vou atualizar com as informações atual
 
     }
+    @DeleteMapping("/{id}") // avisar que o id que vem no método esta vindo no ID do postman
+    @Transactional
+    public void excluir(@PathVariable Long id){ //  PathVariable Uma variavel da URL deleteMapping
+
+        repository.deleteById(id); // faz o delete por ID
+    }
 
 }
