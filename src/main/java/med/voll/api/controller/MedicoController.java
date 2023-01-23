@@ -24,7 +24,7 @@ public class MedicoController {
     @GetMapping   //somente para leitura
     public Page<DadosListagemMedico> listar(Pageable paginacao){ //listar todos os medicos no banco
 
-         return repository.findAll(paginacao).map(DadosListagemMedico::new); //fazer um mapeamento para converter de Médico para Listagem Medico classe To list para converter para uma lista
+         return repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new); //fazer um mapeamento para converter de Médico para Listagem Medico classe To list para converter para uma lista
     } // Conversão de médico para Dados Listagem médicos.
       // Oageable classe do Spring para paginação na hora de listar todos os itens
       // Page devolve informações sobre paginação com a lista dos dados dos médicos.
@@ -40,7 +40,9 @@ public class MedicoController {
     @Transactional
     public void excluir(@PathVariable Long id){ //  PathVariable Uma variavel da URL deleteMapping
 
-        repository.deleteById(id); // faz o delete por ID
+        var medico = repository.getReferenceById(id);//busca a referencia do ID]
+        medico.excluir(); //excluir depois que foi alterado para falso o ativo e no banco vai alterar para 0
+
     }
 
 }
