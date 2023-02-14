@@ -2,6 +2,9 @@ package med.voll.api.controller;
 
 import jakarta.validation.Valid;
 import med.voll.api.domain.DadosAutenticacao;
+import med.voll.api.domain.usuario.Usuario;
+import med.voll.api.infra.security.DadosTokenJWT;
+import med.voll.api.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,11 +22,17 @@ public class AutenticacaoController { //classe que dispara o processo de autenti
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados){
-        var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
-        var authentication =   manager.authenticate(token); //converte do dto para o token
-        return  ResponseEntity.ok().build();
+        var Authenticationtoken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+        var authentication =   manager.authenticate(Authenticationtoken); //converte do dto para o token
+
+        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        return  ResponseEntity.ok(new DadosTokenJWT(tokenJWT)); //getprincipal pega o usuario logado
+
 
     }
 }
