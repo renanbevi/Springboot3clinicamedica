@@ -35,7 +35,7 @@ public class MedicoController {
     @GetMapping   //somente para leitura
     public ResponseEntity <Page<DadosListagemMedico>> listar(Pageable paginacao){ //listar todos os medicos no banco
 
-         var page =  repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new); //fazer um mapeamento para converter de Médico para Listagem Medico classe To list para converter para uma lista
+        var page =  repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new); //fazer um mapeamento para converter de Médico para Listagem Medico classe To list para converter para uma lista
         return ResponseEntity.ok(page);
     } // Conversão de médico para Dados Listagem médicos.
       // Oageable classe do Spring para paginação na hora de listar todos os itens
